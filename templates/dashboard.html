@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAFT Executive Admissions Command Center</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/vendor/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vendor/plotly.min.js') }}"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="eyebrow">Executive Decision Support &middot; Live from SQLite</span>
+    <h1>Admissions &amp; Marketing Command Center</h1>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn ghost" id="resetBtn">↺ Reset Filters</button>
+    <button class="btn primary" id="presentBtn">▶ Presentation Mode</button>
+  </div>
+</div>
+
+<div class="filterbar">
+  <select id="f_school"><option value="">School: All</option></select>
+  <select id="f_state"><option value="">State: All</option></select>
+  <select id="f_lead_source"><option value="">Lead Source: All</option></select>
+  <select id="f_status"><option value="">Status: All</option></select>
+  <select id="f_team"><option value="">Team: All</option></select>
+  <div class="breadcrumb" id="breadcrumb"></div>
+</div>
+
+<div class="container">
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Admissions by School</h3>
+      <div class="business-q">Business Question: Which school contributes the most admissions volume — and at what conversion quality?</div>
+      <div class="chart-wrap tall"><canvas id="chartSchool"></canvas></div>
+      <div class="insight" id="insight_by_school"></div>
+    </div>
+    <div class="card">
+      <h3>Funnel Status</h3>
+      <div class="business-q">Business Question: How healthy is the admissions funnel right now?</div>
+      <div class="chart-wrap tall"><canvas id="chartStatus"></canvas></div>
+      <div class="insight" id="insight_funnel"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Lead Source Performance</h3>
+      <div class="business-q">Business Question: Which marketing channel is most efficient, not just biggest?</div>
+      <div class="chart-wrap tall"><canvas id="chartSource"></canvas></div>
+      <div class="insight" id="insight_by_source"></div>
+    </div>
+    <div class="card">
+      <h3>Geographic Demand — India</h3>
+      <div class="business-q">Business Question: Where is admissions demand concentrated geographically?</div>
+      <div class="chart-wrap tall" id="mapWrap"></div>
+      <div class="insight" id="insight_by_state"></div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Team Performance</h3>
+      <div class="business-q">Which counselling team converts leads best?</div>
+      <table class="mini" id="tblTeam"><thead><tr><th>Team</th><th>Leads</th><th>Confirmed</th><th>Conv.</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card">
+      <h3>Top Admission Managers</h3>
+      <div class="business-q">Who is driving the most confirmed admissions?</div>
+      <table class="mini" id="tblManager"><thead><tr><th>Manager</th><th>Leads</th><th>Confirmed</th><th>Conv.</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card">
+      <h3>Top Drop Reasons</h3>
+      <div class="business-q">Business Question: Why are students dropping out?</div>
+      <div class="chart-wrap" style="height:210px"><canvas id="chartDropReasons"></canvas></div>
+      <div class="insight" id="insight_drop_reasons"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card health-card">
+      <div>
+        <h3 style="margin-bottom:14px;">Executive Business Health Score</h3>
+        <div class="health-ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" stroke="#242a55" stroke-width="12" fill="none"/>
+            <circle id="healthArc" cx="60" cy="60" r="52" stroke="#e3ac47" stroke-width="12" fill="none"
+              stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"/>
+          </svg>
+          <div class="score-num" id="healthScoreNum">–</div>
+        </div>
+      </div>
+      <div class="health-contrib" id="healthContrib"></div>
+    </div>
+    <div class="card">
+      <h3>Smart Business Alerts</h3>
+      <div id="alertsWrap"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Registrations Over Time</h3>
+    <div class="business-q">Business Question: Is admissions momentum accelerating or slowing month over month?</div>
+    <div class="chart-wrap"><canvas id="chartTrend"></canvas></div>
+  </div>
+
+  <footer class="note">Every figure on this page is computed live from the real uploaded workbook via SQLite — no simulated data. Click any bar to cross-filter the whole page.</footer>
+</div>
+
+<div id="presentLayer">
+  <button class="btn ghost p-exit" id="presentExit">✕ Exit (Esc)</button>
+  <div class="p-eyebrow" id="p-eyebrow">Slide 1 / 8</div>
+  <h2 id="p-title">Loading…</h2>
+  <div class="p-kpi" id="p-kpi"></div>
+  <div class="p-body" id="p-body"></div>
+  <div class="p-nav">
+    <button class="btn" id="p-prev">← Prev</button>
+    <span class="p-progress" id="p-progress"></span>
+    <button class="btn" id="p-next">Next →</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
